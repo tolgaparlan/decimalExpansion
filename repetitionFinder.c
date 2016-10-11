@@ -34,9 +34,6 @@ int divByTwoFive(int num){ //checks if a number is divisable 5
 
 int main(int argc, char **argv)
 {
-	int n;
-	scanf("%d",&n);
-	printf("%d\n", isDivbyTwo(n));
 	return 0;
 }
 
