@@ -20,10 +20,23 @@ int isPrime(int num){ //checks if a number is prime or not
 	return 1; //prime
 }
 
+int isDivbyTwo(int num){ //checks if a number is divisable by 2
+	return (num%2==0 && num>0 ? 1 : 0);
+}
+
+int isDivbyFive(int num){ //checks if a number is divisable 5
+	return (num%5==0 && num>0 ?  1 :0);
+}
+
+int divByTwoFive(int num){ //checks if a number is divisable 5
+	return(isDivbyFive(num)&&isDivbyTwo(num) ? 1 : 0);
+}
 
 int main(int argc, char **argv)
 {
-	
+	int n;
+	scanf("%d",&n);
+	printf("%d\n", isDivbyTwo(n));
 	return 0;
 }
 
