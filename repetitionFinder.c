@@ -70,6 +70,15 @@ int biggestPrimeDivisor(int num){//biggest prime divisor which is not 2 or 5
 	return ((num/div)>div && isPrime(num/div) ? (num/div) : div); //return the biggest. For numbers like 77, because the iterator doesnt reach 11.
 }
 
+void simplify(int *fraction){	//fraction is a 2 cell array of numerator and denominator
+	for(int i=2;i<=fraction[1];i++){ //fraction[1] is the denominator. assume that den is always bigger
+		while(fraction[0]%i==0 && fraction[1]%i==0){
+			fraction[0] /= i;
+			fraction[1] /= i;
+		}
+	}
+}
+
 int main(int argc, char **argv)
 {
 	
