@@ -11,7 +11,9 @@ http://stackoverflow.com/questions/1315595/algorithm-for-detecting-repeating-dec
 *Simplify the denominator/numerator as much as we can
 DONE *Check if den is in (2^a)*(5^b) form
 DONE *Check if den is divisable by 2 and 5
-*Check for 10^k = 1(mod n), k=length of repetation, n=biggest prime divisor of den
-*Find the biggest prime divisor of a number
+DONE *Check for 10^k = 1(mod n), k=length of repetation, n=biggest prime divisor of den
+DONE *Find the biggest prime divisor of a number
 *iteratively find the repetition
 
+#IDEAS AND SHIT
+*we can carry numerator and denominator around in an array. would be easy to reach and manipulate in functions

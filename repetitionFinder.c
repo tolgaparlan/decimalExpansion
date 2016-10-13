@@ -52,8 +52,27 @@ int checkTwoFive(int num){//checks if the number is in 2^a * 5^b form
 	return (num==1 ? 1: 0); //1 if valid, 0 if not
 }
 
+int biggestPrimeDivisor(int num){//biggest prime divisor which is not 2 or 5
+	int div =1 ;//iterator for the divisor check
+	
+	while(isDivbyFive(num)){//divides until can no more be divided
+		num /= 5;
+	}
+	while(isDivbyTwo(num)){//divides until can no more be divided
+		num /= 2;
+	}
+	
+	for(int i=1;i*i<=num;i+=2){//don't need to be extremely efficient. can improve if you want
+		if(isPrime(i) && num%i==0){
+			div=i;
+		}
+	}
+	return ((num/div)>div && isPrime(num/div) ? (num/div) : div); //return the biggest. For numbers like 77, because the iterator doesnt reach 11.
+}
+
 int main(int argc, char **argv)
 {
+	
 	return 0;
 }
 
