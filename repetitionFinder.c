@@ -32,6 +32,16 @@ int divByTwoFive(int num){ //checks if a number is divisable 2 and 5
 	return(isDivbyFive(num)&&isDivbyTwo(num) ? 1 : 0);
 }
 
+//Check for 10^k = 1(mod n), k=length of repetation, n=biggest prime divisor of den
+int lengthOfRepetition(int n){ //N SHOULDNT BE 2 OR 5!!
+	int k;
+	long tenPower = 10; //just in case this number gets too big, made it a long
+	for(k=1;tenPower%n != 1;k++){
+		tenPower *= 10;
+	}
+	return k;	
+}
+
 int checkTwoFive(int num){//checks if the number is in 2^a * 5^b form
 	while(isDivbyFive(num)){//divides until can no more be divided
 		num /= 5;
