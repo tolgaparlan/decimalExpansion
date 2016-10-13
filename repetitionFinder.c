@@ -79,6 +79,23 @@ void simplify(int *fraction){	//fraction is a 2 cell array of numerator and deno
 	}
 }
 
+int findRepetition(char *decimal, int charLen, int lenRep){//takes the decimal point string and length of repetition as input. returns the index the repetition starts
+	int match;//stores number of same chars
+	for(int i=1;i<charLen;i++){ //0th char is not repetitive anyway
+		match=0;
+		for(int j=0;j<lenRep;j++){//check the series for each digit
+			if(decimal[i+j]==decimal[i+j+lenRep]){ //check if repeats
+				match++;
+			}
+		}
+		if(match==lenRep){//if all the repeating digits were present.
+			return i;
+		}
+	}
+	return -1; //if everything goes well, the function should never reach here	
+}
+
+
 int main(int argc, char **argv)
 {
 	
