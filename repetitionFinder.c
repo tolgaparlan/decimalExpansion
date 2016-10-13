@@ -28,8 +28,18 @@ int isDivbyFive(int num){ //checks if a number is divisable 5
 	return (num%5==0 && num>0 ?  1 :0);
 }
 
-int divByTwoFive(int num){ //checks if a number is divisable 5
+int divByTwoFive(int num){ //checks if a number is divisable 2 and 5
 	return(isDivbyFive(num)&&isDivbyTwo(num) ? 1 : 0);
+}
+
+int checkTwoFive(int num){//checks if the number is in 2^a * 5^b form
+	while(isDivbyFive(num)){//divides until can no more be divided
+		num /= 5;
+	}
+	while(isDivbyTwo(num)){//divides until can no more be divided
+		num /= 2;
+	}
+	return (num==1 ? 1: 0); //1 if valid, 0 if not
 }
 
 int main(int argc, char **argv)
