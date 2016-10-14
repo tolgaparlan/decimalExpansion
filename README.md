@@ -14,7 +14,7 @@ DONE *Check if den is divisable by 2 and 5 <br />
 DONE *Check for 10^k = 1(mod n), k=length of repetation, n=biggest prime divisor of den<br />
 DONE *Find the biggest prime divisor of a number<br />
 DONE *iteratively find the repetition<br />
-*expand den and num until den is in a form of all 9s<br />
+DONE *expand den and num until den is in a form of all 9s<br />
 
 #IDEAS AND SHIT
 *we can carry numerator and denominator around in an array. would be easy to reach and manipulate in functions<br />

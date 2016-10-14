@@ -95,10 +95,32 @@ int findRepetition(char *decimal, int charLen, int lenRep){//takes the decimal p
 	return -1; //if everything goes well, the function should never reach here	
 }
 
+int isAllNines(int num){//helper function for expandToNine
+	while(num){ 
+		if(num%10!=9){
+			return 0; //not
+		}
+		num /=10;
+	}	
+	return 1; //yep
+}
+
+void expandToNine(int *fraction){ //expand den and num until den is in a form of all 9
+	int den=fraction[1], num=fraction[0];	
+	for(int i=1;!isAllNines(fraction[1]);i++){ //it's not extremely efficient but does the job. can be immproved
+		fraction[0] = num*i;
+		fraction[1] = den*i;
+	}
+}
 
 int main(int argc, char **argv)
 {
-	
+	int test[2];
+	while(69){
+		scanf("%d %d",&test[0],&test[1]);
+		expandToNine(test);
+		printf("%d %d\n",test[0],test[1]);
+	}
 	return 0;
 }
 
