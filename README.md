@@ -2,9 +2,9 @@
 We expand decimals and shit.
 
 #--Websites we checked--
-http://eli.thegreenplace.net/2009/02/25/project-euler-problem-26/
-http://mathworld.wolfram.com/DecimalExpansion.html
-http://stackoverflow.com/questions/1315595/algorithm-for-detecting-repeating-decimals
+http://eli.thegreenplace.net/2009/02/25/project-euler-problem-26/<br />
+http://mathworld.wolfram.com/DecimalExpansion.html<br />
+http://stackoverflow.com/questions/1315595/algorithm-for-detecting-repeating-decimals<br />
 
 #--Function list--
 
@@ -15,6 +15,7 @@ DONE *Check for 10^k = 1(mod n), k=length of repetation, n=biggest prime divisor
 DONE *Find the biggest prime divisor of a number<br />
 DONE *iteratively find the repetition<br />
 DONE *expand den and num until den is in a form of all 9s<br />
+DONE *handle it if num>den
 
 #IDEAS AND SHIT
 *we can carry numerator and denominator around in an array. would be easy to reach and manipulate in functions<br />
