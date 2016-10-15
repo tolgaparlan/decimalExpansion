@@ -1,25 +1,7 @@
-/* Finds repetitions and shit.
- * 
- * 
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 
-int isPrime(int num){ //checks if a number is prime or not
-	if(num==2 || num==3 || num==5){ //basic cases
-		return 1;
-	}
-	if (num%2==0 || num%3==0 || num==1 ||num%5==0){ //basic cases
-		return 0;
-	}
-	for(int i=6;i*i<num;i+=6){ 
-		if(num%(i+1)==0 || num%(i-1)==0){ //every prime number is in the form of 6k+-1
-			return 0; //not prime
-		}		
-	}
-	return 1; //prime
-}
+#define MAXPRIME 5000 //to control how big an expansion can get.. try 1\983.. it gets really big. :D
 
 int isDivbyTwo(int num){ //checks if a number is divisable by 2
 	return (num%2==0 && num>0 ? 1 : 0);
@@ -39,35 +21,25 @@ int checkTwoFive(int num){//checks if the number is in 2^a * 5^b form
 	return (num==1 ? 1: 0); //1 if valid, 0 if not
 }
 
-int biggestPrimeDivisor(int num){//biggest prime divisor which is not 2 or 5
-	int div =1 ;//iterator for the divisor check
+int lengthOfRepetition(int n){ //finds the length of the repetition
+	int value=1 ,length=0;	
+	while(isDivbyTwo(n)){
+		n /= 2;
+	}
+	while(isDivbyFive(n)){//makes sure not divisable by 2 or 5
+		n /= 5;
+	}
 	
-	while(isDivbyFive(num)){//divides until can no more be divided
-		num /= 5;
-	}
-	while(isDivbyTwo(num)){//divides until can no more be divided
-		num /= 2;
-	}
-	for(int i=1;i/2<=num;i+=2){//don't need to be extremely efficient. can improve if you want
-		if(isPrime(i) && num%i==0){
-			div=i;	
-		}
-	}
-	return ((num/div)>div && isPrime(num/div) ? (num/div) : div); //return the biggest. For numbers like 77, because the iterator doesnt reach 11.
+    do{
+		//printf("%d %d\n",value,length);
+		value = value *10;
+		value = value % n;
+		length++;
+    }while (value != 1); //checks after how many steps 'value' returns to what it started as 	
+    return length;
 }
 
-//Check for 10^k = 1(mod n), k=length of repetation, n=biggest prime divisor of den
-int lengthOfRepetition(int n){ //N SHOULDNT BE 2 OR 5!!
-	n = biggestPrimeDivisor(n);
-	int k;
-	long tenPower = 10; //just in case this number gets too big, made it a long
-	for(k=1;tenPower%n != 1;k++){
-		tenPower *= 10;
-	}
-	return k;	
-}
-
-void simplify(unsigned long *fraction){	//fraction is a 2 cell array of numerator and denominator
+void Cosimplify(unsigned long *fraction){	//simply den and num until they are co-primes
 	for(int i=2;i<=fraction[1];i++){ //fraction[1] is the denominator. assume that den is always bigger
 		while(fraction[0]%i==0 && fraction[1]%i==0){
 			fraction[0] /= i;
@@ -76,12 +48,12 @@ void simplify(unsigned long *fraction){	//fraction is a 2 cell array of numerato
 	}
 }
 
-int findRepetition(char *decimal, int charLen, int lenRep){//takes the decimal point string and length of repetition as input. returns the index the repetition starts
+int findRepetition(char *number, int lenRep){//takes the decimal point string and length of repetition as input. returns the index the repetition starts
 	int match;//stores number of same chars
-	for(int i=0;i<charLen;i++){ //because of the dot character, non-decimal points will never be mistaken
+	for(int i=0;i<MAXPRIME;i++){ //because of the dot character, non-decimal points will never be mistaken
 		match=0;
 		for(int j=0;j<lenRep;j++){//check the series for each digit
-			if(decimal[i+j]==decimal[i+j+lenRep]){ //check if repeats
+			if(number[i+j]==number[i+j+lenRep]){ //check if repeats
 				match++;
 			}
 		}
@@ -89,76 +61,65 @@ int findRepetition(char *decimal, int charLen, int lenRep){//takes the decimal p
 			return i; //return the index repetition starts
 		}
 	}
-	return -1; //if everything goes well, the function should never reach here	
+	return -1; //there is a problem (no repetition?)
 }
 
-int isAllNines(int num){//helper function for expandToNine
-	while(num){ 
-		if(num%10!=9){
-			return 0; //not
-		}
-		num /=10;
-	}	
-	return 1; //yep
-}
-
-void expandToNine(unsigned long *fraction){ //expand den and num until den is in a form of all 9
-	int den=fraction[1], num=fraction[0];	
-	for(int i=1;!isAllNines(fraction[1]);i++){ //it's not extremely efficient but does the job. can be immproved	
-		fraction[0] = num*i;
-		fraction[1] = den*i;
-	}
-}
-
-int numBigger(unsigned long *fraction){//if the num is bigger than num
+int makeDenGreatAgain(unsigned long *fraction){//if the num is bigger than den
 	int nonDecimal = fraction[0]/fraction[1];
 	fraction[0] %= fraction[1];
 	return nonDecimal;
 }
 
 void markRepetition(char *number, int index, int length){//formats the string for printing
-	//printf("%d\n",index);
-	for(int i=2;i<index;i++){
-		number[i-2] = number[i];
+	for(int i=length;i>0;i--){
+		number[i+index] = number[i+index-1];
 	}	
-	//printf("%s\n",number);
-	number[index-2] = '[';
-	for(int i=0;i<length;i++){
-		number[i+index-1] = number[i+index];
-	}	
-	//printf("%s\n",number);
-	number[length+index-1] = ']';
-	number[length+index] = '\0'; //dont read beyond this
+	number[index] = '[';
+	number[length+index+1] = ']';
+	number[length+index+2] = '\0'; //dont read beyond this
+}
+
+void longDivision(unsigned long *fraction, char* number){
 	
-	//printf("%s\n",number);
+    int remainder = 0,num = fraction[0],den = fraction[1],tracker;
+
+    for(int i=0;i<MAXPRIME;i++){		
+		tracker=0;
+		while(num<den){
+			num *= 10;
+			if(tracker){
+				number[i]= 0 + '0';
+				i++;
+			}
+			tracker++;
+		}
+		remainder = num %den; 
+		number[i] = num/den + '0';
+		num = remainder;
+	}
+	number[MAXPRIME] = '\0';
 }
 
 int main(int argc, char **argv)
 {
 	unsigned long fraction[2]; //to hold num and den
 	int nonDecimal =0; //hold the non-decimal part 
+	int lenRep; //length of repetition
 	printf("Please enter the numerator and the denominator respectively\n");
 	scanf("%lu %lu", &fraction[0],&fraction[1]);
 	if(fraction[0]>fraction[1]){ //if fraction >1
-		nonDecimal = numBigger(fraction);
+		nonDecimal = makeDenGreatAgain(fraction);
 	}
-	simplify(fraction); //Simplify  everything
+	Cosimplify(fraction); //Simplify  everything
 	if(checkTwoFive(fraction[1])){ //if true, there is no repetition
-		printf("%lf\n", nonDecimal + (double)fraction[0]/(double)fraction[1]);
-		return 0; //end the program		
-	}
-	if(isDivbyFive(fraction[1]) || isDivbyTwo(fraction[1])){ //Check if the den is divisable by 2 or 5
-		char *number = malloc(60*sizeof(char)); //array size is larger just in case
-		sprintf(number,"%.55lf" ,(double)fraction[0]/(double)fraction[1]); //put the division value to the string "number". 55 is the longest a double can hold appearently
-		markRepetition(number,findRepetition(number,60,lengthOfRepetition(fraction[1])),lengthOfRepetition(fraction[1]));
+		printf("%g\n", nonDecimal + (double)fraction[0]/(double)fraction[1]);	
+	}else{ //there is repetition
+		lenRep = lengthOfRepetition(fraction[1]);
+		char number[MAXPRIME];
+		longDivision(fraction,number);
+		markRepetition(number,findRepetition(number,lenRep),lenRep);
 		printf("%d.%s\n",nonDecimal,number);
-		
-	}else{
-		printf("bura\n");
-		expandToNine(fraction);
-		printf("%d.[%lu]\n",nonDecimal,fraction[0]); //num is the repetition
 	}
-	
 	
 	return 0;
 }
