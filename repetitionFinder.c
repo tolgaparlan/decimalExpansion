@@ -1,7 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAXPRIME 5000 //to control how big an expansion can get.. try 1\983.. it gets really big. :D
+void *safeMalloc(int n) {
+	void *p = malloc(n);
+	if (p == NULL) {
+		printf("Error: malloc(%d) failed. Out of memory?\n", n);
+		exit(EXIT_FAILURE);
+	}
+	return p;
+}
 
 int isDivbyTwo(int num){ //checks if a number is divisable by 2
 	return (num%2==0 && num>0 ? 1 : 0);
@@ -50,7 +57,7 @@ void Cosimplify(unsigned long *fraction){	//simply den and num until they are co
 
 int findRepetition(char *number, int lenRep){//takes the decimal point string and length of repetition as input. returns the index the repetition starts
 	int match;//stores number of same chars
-	for(int i=0;i<MAXPRIME;i++){ //because of the dot character, non-decimal points will never be mistaken
+	for(int i=0;i<lenRep*3;i++){ //because of the dot character, non-decimal points will never be mistaken
 		match=0;
 		for(int j=0;j<lenRep;j++){//check the series for each digit
 			if(number[i+j]==number[i+j+lenRep]){ //check if repeats
@@ -79,11 +86,11 @@ void markRepetition(char *number, int index, int length){//formats the string fo
 	number[length+index+2] = '\0'; //dont read beyond this
 }
 
-void longDivision(unsigned long *fraction, char* number){
+void longDivision(unsigned long *fraction, char* number, int lenRep){
 	
     int remainder = 0,num = fraction[0],den = fraction[1],tracker;
 
-    for(int i=0;i<MAXPRIME;i++){		
+    for(int i=0;i<lenRep*3;i++){		
 		tracker=0;
 		while(num<den){
 			num *= 10;
@@ -97,7 +104,7 @@ void longDivision(unsigned long *fraction, char* number){
 		number[i] = num/den + '0';
 		num = remainder;
 	}
-	number[MAXPRIME] = '\0';
+	number[lenRep*3] = '\0';
 }
 
 int main(int argc, char **argv)
@@ -115,10 +122,12 @@ int main(int argc, char **argv)
 		printf("%g\n", nonDecimal + (double)fraction[0]/(double)fraction[1]);	
 	}else{ //there is repetition
 		lenRep = lengthOfRepetition(fraction[1]);
-		char number[MAXPRIME];
-		longDivision(fraction,number);
+		char *number = safeMalloc(lenRep*3*sizeof(char)); //3 times the length of repetition just to be safe
+		longDivision(fraction,number,lenRep);
 		markRepetition(number,findRepetition(number,lenRep),lenRep);
 		printf("%d.%s\n",nonDecimal,number);
+		printf("length of repetition is %d digits per cycle\n",lenRep);
+		free(number);
 	}
 	
 	return 0;
