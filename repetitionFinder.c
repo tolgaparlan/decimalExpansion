@@ -47,7 +47,7 @@ int lengthOfRepetition(int n){ //finds the length of the repetition
 }
 
 void Cosimplify(unsigned long *fraction){	//simply den and num until they are co-primes
-	for(int i=2;i<=fraction[1];i++){ //fraction[1] is the denominator. assume that den is always bigger
+	for(int i=2;i<=fraction[0]/2;i++){ //fraction[0] is the numerator. assume that den is always bigger
 		while(fraction[0]%i==0 && fraction[1]%i==0){
 			fraction[0] /= i;
 			fraction[1] /= i;
@@ -122,7 +122,8 @@ int main(int argc, char **argv)
 		printf("%g\n", nonDecimal + (double)fraction[0]/(double)fraction[1]);	
 	}else{ //there is repetition
 		lenRep = lengthOfRepetition(fraction[1]);
-		char *number = safeMalloc(lenRep*3*sizeof(char)); //3 times the length of repetition just to be safe
+		printf("%d\n", lenRep);
+		char *number = safeMalloc(1 + lenRep*3*sizeof(char)); //3 times the length of repetition just to be safe
 		longDivision(fraction,number,lenRep);
 		markRepetition(number,findRepetition(number,lenRep),lenRep);
 		printf("%d.%s\n",nonDecimal,number);
