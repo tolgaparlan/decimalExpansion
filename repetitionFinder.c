@@ -122,7 +122,6 @@ int main(int argc, char **argv)
 		printf("%g\n", nonDecimal + (double)fraction[0]/(double)fraction[1]);	
 	}else{ //there is repetition
 		lenRep = lengthOfRepetition(fraction[1]);
-		printf("%d\n", lenRep);
 		char *number = safeMalloc(1 + lenRep*3*sizeof(char)); //3 times the length of repetition just to be safe
 		longDivision(fraction,number,lenRep);
 		markRepetition(number,findRepetition(number,lenRep),lenRep);
