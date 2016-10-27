@@ -112,7 +112,7 @@ int main(int argc, char **argv)
 	unsigned long fraction[2]; //to hold num and den
 	int nonDecimal =0; //hold the non-decimal part 
 	int lenRep; //length of repetition
-	printf("Please enter the numerator and the denominator respectively\n");
+	printf("Please enter the numerator and the denominator respectively seperated by a space\n");
 	scanf("%lu %lu", &fraction[0],&fraction[1]);
 	if(fraction[0]>fraction[1]){ //if fraction >1
 		nonDecimal = makeDenGreatAgain(fraction);
