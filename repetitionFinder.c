@@ -2,19 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-int isDivbyTwo(int num){ //checks if a number is divisable by 2
-	return (num%2==0 && num>0 ? 1 : 0);
-}
-
-int isDivbyFive(int num){ //checks if a number is divisable 5
-	return (num%5==0 && num>0 ?  1 :0);
-}
-
 int checkTwoFive(int num){//checks if the number is in 2^a * 5^b form
-	while(isDivbyFive(num)){//divides until can no more be divided
+	while(num%5==0 && num>0){//divides until can no more be divided
 		num /= 5;
 	}
-	while(isDivbyTwo(num)){//divides until can no more be divided
+	while(num%2==0 && num>0){//divides until can no more be divided
 		num /= 2;
 	}
 	return (num==1 ? 1: 0); //1 if valid, 0 if not
@@ -22,15 +14,14 @@ int checkTwoFive(int num){//checks if the number is in 2^a * 5^b form
 
 int lengthOfRepetition(int n){ //finds the length of the repetition
 	int value=1 ,length=0;	
-	while(isDivbyTwo(n)){
+	while(n%2==0 && n>0){
 		n /= 2;
 	}
-	while(isDivbyFive(n)){//makes sure not divisable by 2 or 5
+	while(n%5==0 && n>0){//makes sure not divisable by 2 or 5
 		n /= 5;
 	}
 	
     do{
-		//printf("%d %d\n",value,length);
 		value = value *10;
 		value = value % n;
 		length++;
@@ -63,7 +54,7 @@ int findRepetition(char *number, int lenRep){//takes the decimal point string an
 	return -1; //there is a problem (no repetition?)
 }
 
-int makeDenGreatAgain(unsigned long *fraction){//if the num is bigger than den
+int makeDenBigger(unsigned long *fraction){//if the num is bigger than den
 	int nonDecimal = fraction[0]/fraction[1];
 	fraction[0] %= fraction[1];
 	return nonDecimal;
@@ -110,7 +101,7 @@ int main(int argc, char **argv)
 	printf("Please enter the numerator and the denominator respectively seperated by a space\n");
 	scanf("%lu %lu", &fraction[0],&fraction[1]);
 	if(fraction[0]>fraction[1]){ //if fraction >1
-		nonDecimal = makeDenGreatAgain(fraction);
+		nonDecimal = makeDenBigger(fraction);
 	}
 	Cosimplify(fraction); //Simplify  everything
 	if(checkTwoFive(fraction[1])){ //if true, there is no repetition
@@ -121,7 +112,6 @@ int main(int argc, char **argv)
 		longDivision(fraction,number,lenRep);
 		markRepetition(number,findRepetition(number,lenRep),lenRep);
 		printf("%d.%s\n",nonDecimal,number);
-		printf("length of repetition is %d digits per cycle\n",lenRep);
 		free(number);
 	}
 	
