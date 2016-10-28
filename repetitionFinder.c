@@ -1,14 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-void *safeMalloc(int n) {
-	void *p = malloc(n);
-	if (p == NULL) {
-		printf("Error: malloc(%d) failed. Out of memory?\n", n);
-		exit(EXIT_FAILURE);
-	}
-	return p;
-}
+#include <string.h>
 
 int isDivbyTwo(int num){ //checks if a number is divisable by 2
 	return (num%2==0 && num>0 ? 1 : 0);
@@ -78,6 +70,9 @@ int makeDenGreatAgain(unsigned long *fraction){//if the num is bigger than den
 }
 
 void markRepetition(char *number, int index, int length){//formats the string for printing
+	if(index==-1){ //in some cases where length==1, index may not be found. 
+		index=strlen(number)-1;
+	}
 	for(int i=length;i>0;i--){
 		number[i+index] = number[i+index-1];
 	}	
@@ -86,7 +81,7 @@ void markRepetition(char *number, int index, int length){//formats the string fo
 	number[length+index+2] = '\0'; //dont read beyond this
 }
 
-void longDivision(unsigned long *fraction, char* number, int lenRep){
+void longDivision(unsigned long *fraction, char* number, int lenRep){//applies long division and puts results in a char array
 	
     int remainder = 0,num = fraction[0],den = fraction[1],tracker;
 
@@ -121,8 +116,8 @@ int main(int argc, char **argv)
 	if(checkTwoFive(fraction[1])){ //if true, there is no repetition
 		printf("%g\n", nonDecimal + (double)fraction[0]/(double)fraction[1]);	
 	}else{ //there is repetition
-		lenRep = lengthOfRepetition(fraction[1]);
-		char *number = safeMalloc(1 + lenRep*3*sizeof(char)); //3 times the length of repetition just to be safe
+		lenRep = lengthOfRepetition(fraction[1]);	
+		char *number = malloc(lenRep*3*sizeof(char)); //3 times the length of repetition just to be safe
 		longDivision(fraction,number,lenRep);
 		markRepetition(number,findRepetition(number,lenRep),lenRep);
 		printf("%d.%s\n",nonDecimal,number);
