@@ -1,5 +1,5 @@
 # decimalExpansion
-We expand decimals and shit.
+A simple school project written in C. Takes two integers, divides them and marks the repeating part of the resulting irrational number.
 
 #--Websites we checked--
 http://eli.thegreenplace.net/2009/02/25/project-euler-problem-26/<br />
